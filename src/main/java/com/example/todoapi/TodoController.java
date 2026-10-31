@@ -19,11 +19,13 @@ public class TodoController {
 
     private final AtomicInteger nextId = new AtomicInteger(1);
 
+    // Display all tasks
     @GetMapping("/todos")
     public List<Map<String, Object>> getTodos() {
         return todos;
     }
 
+    // Add a new task
     @PostMapping("/todos")
     public Map<String, Object> addTodo(
             @RequestBody Map<String, String> request) {
@@ -36,8 +38,19 @@ public class TodoController {
         return todo;
     }
 
+    // Check application health
     @GetMapping("/health")
     public Map<String, String> health() {
         return Map.of("status", "UP");
+    }
+
+    // Display application information
+    @GetMapping("/info")
+    public Map<String, String> info() {
+        return Map.of(
+                "application", "DevOps Todo API",
+                "version", "1.0",
+                "developer", "Abhishek Kumar"
+        );
     }
 }
