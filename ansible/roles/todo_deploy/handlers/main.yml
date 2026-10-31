@@ -1,0 +1,6 @@
+---
+- name: Restart Todo API
+  ansible.builtin.shell: |
+    launchctl bootout gui/{{ ansible_user_uid }} "{{ service_file }}" 2>/dev/null || true
+    launchctl bootstrap gui/{{ ansible_user_uid }} "{{ service_file }}"
+  changed_when: true

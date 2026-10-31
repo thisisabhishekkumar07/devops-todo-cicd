@@ -1,0 +1,7 @@
+---
+- name: Deploy Spring Boot Todo API
+  hosts: app_servers
+  gather_facts: true
+
+  roles:
+    - todo_deploy

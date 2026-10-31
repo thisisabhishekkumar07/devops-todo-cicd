@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{{ service_label }}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{ java_home }}/bin/java</string>
+        <string>-jar</string>
+        <string>{{ deploy_dir }}/{{ jar_name }}</string>
+        <string>--server.port={{ app_port }}</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>{{ deploy_dir }}/app.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>{{ deploy_dir }}/error.log</string>
+</dict>
+</plist>

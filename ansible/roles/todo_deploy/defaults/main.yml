@@ -1,0 +1,8 @@
+---
+app_name: todo-api
+app_port: 8081
+deploy_dir: "{{ ansible_env.HOME }}/devops-todo-deployment"
+jar_name: todo-api-0.0.1-SNAPSHOT.jar
+java_home: /Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+service_label: com.devops.todoapi
+service_file: "{{ ansible_env.HOME }}/Library/LaunchAgents/{{ service_label }}.plist"

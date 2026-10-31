@@ -1,0 +1,7 @@
+.git
+.gitignore
+.vscode
+ansible
+README.md
+target/*
+!target/todo-api-0.0.1-SNAPSHOT.jar

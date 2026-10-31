@@ -1,0 +1,40 @@
+---
+- name: Check Java 21 installation
+  ansible.builtin.stat:
+    path: "{{ java_home }}/bin/java"
+  register: java_binary
+
+- name: Verify Java 21 exists
+  ansible.builtin.assert:
+    that:
+      - java_binary.stat.exists
+    fail_msg: "Java 21 is missing."
+
+- name: Create deployment directory
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Create LaunchAgents directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/Library/LaunchAgents"
+    state: directory
+    mode: "0755"
+
+- name: Copy Spring Boot JAR
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../target/{{ jar_name }}"
+    dest: "{{ deploy_dir }}/{{ jar_name }}"
+    mode: "0644"
+  notify: Restart Todo API
+
+- name: Create launchd service configuration
+  ansible.builtin.template:
+    src: todo-api.plist.j2
+    dest: "{{ service_file }}"
+    mode: "0644"
+  notify: Restart Todo API
+
+- name: Apply service changes
+  ansible.builtin.meta: flush_handlers
