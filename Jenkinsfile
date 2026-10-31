@@ -5,7 +5,12 @@ pipeline {
         jdk 'JDK21'
     }
 
+    options {
+        timestamps()
+    }
+
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -21,7 +26,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './mvnw -DskipTests clean package'
+                sh './mvnw -DskipTests package'
             }
         }
 
@@ -39,6 +44,10 @@ pipeline {
 
         success {
             echo 'BUILD SUCCESSFUL!'
+        }
+
+        failure {
+            echo 'BUILD FAILED!'
         }
     }
 }
