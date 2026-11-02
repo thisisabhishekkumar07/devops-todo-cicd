@@ -4,11 +4,34 @@
     path: "{{ java_home }}/bin/java"
   register: java_binary
 
-- name: Verify Java 21 exists
+- name: Check Homebrew installation
+  ansible.builtin.command: brew --version
+  register: brew_check
+  changed_when: false
+  failed_when: false
+  when: not java_binary.stat.exists
+
+- name: Require Homebrew when Java installation is needed
   ansible.builtin.assert:
     that:
-      - java_binary.stat.exists
-    fail_msg: "Java 21 is missing."
+      - brew_check.rc == 0
+    fail_msg: "Install Homebrew first: https://brew.sh"
+  when: not java_binary.stat.exists
+
+- name: Install Java 21 using Homebrew
+  ansible.builtin.command: brew install --cask temurin@21
+  when: not java_binary.stat.exists
+
+- name: Verify Java 21 after installation
+  ansible.builtin.stat:
+    path: "{{ java_home }}/bin/java"
+  register: java_verified
+
+- name: Confirm Java 21 is available
+  ansible.builtin.assert:
+    that:
+      - java_verified.stat.exists
+    fail_msg: "Java 21 installation failed or java_home is incorrect."
 
 - name: Create deployment directory
   ansible.builtin.file:
